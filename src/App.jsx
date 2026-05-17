@@ -15,7 +15,7 @@ const WhyExhibt = React.lazy(() => import("./pages/WhyExhibit"));
 const WhyVisit = React.lazy(() => import("./pages/WhyVisit"));
 const HostBrandExpo = React.lazy(() => import("./pages/HostBrandExpo"));
 const CostomisedExpo = React.lazy(() => import("./pages/CostomisedExpo"));
-const Phygiverse = React.lazy(() => import("./pages/PhyGiverse"));
+const Phygiverse = React.lazy(() => import("./pages/Phygiverse"));
 
 function App() {
   return (
