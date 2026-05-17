@@ -1,0 +1,9 @@
+.navbar-brand {
+    font-size:35px !important;
+    color:#fff !important;
+    font-weight: 500 !important;
+}
+
+nav.navbar img {
+    width: 170px !important;
+}
