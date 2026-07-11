@@ -635,6 +635,7 @@ const Home = () => {
                       <div className="col-md-4 mb-3">
                         <div className="form-wrap topppp tpppp">
                           <MdOutlineLocationCity />
+                          <div class="select-wrapper">
                           <select
                             className={`form-control ${errors.country ? 'is-invalid' : ''}`}
                             name="country"
@@ -649,6 +650,7 @@ const Home = () => {
                               </option>
                             ))}
                           </select>
+                          </div>
                           {errors.country && <div className="invalid-feedback">{errors.country}</div>}
                         </div>
                       </div>
@@ -911,6 +913,7 @@ const Home = () => {
                     <div className="col-md-4 mb-3">
                       <div className="form-wrap topppp tpppp">
                         <MdOutlineLocationCity />
+                        <div className="select-wrapper">  
                         <select
                           className={`form-control ${errors.country ? 'is-invalid' : ''}`}
                           name="country"
@@ -925,6 +928,7 @@ const Home = () => {
                             </option>
                           ))}
                         </select>
+                        </div>
                         {errors.country && <div className="invalid-feedback">{errors.country}</div>}
                       </div>
                     </div>
@@ -933,6 +937,7 @@ const Home = () => {
                     <div className="col-md-4 mb-3">
                       <div className="form-wrap topppp">
                         <MdOutlineLocationCity />
+                        <div className="select-wrapper">  
                         <select
                           className={`form-control ${errors.state ? 'is-invalid' : ''}`}
                           name="state"
@@ -948,6 +953,7 @@ const Home = () => {
                             </option>
                           ))}
                         </select>
+                        </div>
                         {errors.state && <div className="invalid-feedback">{errors.state}</div>}
                       </div>
                     </div>
@@ -956,6 +962,7 @@ const Home = () => {
                     <div className="col-md-4 mb-3">
                       <div className="form-wrap topppp">
                         <MdOutlineLocationCity />
+                        <div className="select-wrapper">  
                         <select
                           className={`form-control ${errors.city ? 'is-invalid' : ''}`}
                           name="city"
@@ -971,6 +978,7 @@ const Home = () => {
                             </option>
                           ))}
                         </select>
+                        </div>
                         {errors.city && <div className="invalid-feedback">{errors.city}</div>}
                       </div>
                     </div>
@@ -979,6 +987,7 @@ const Home = () => {
                     <div className="col-md-6 col-sm-12 mb-3">
                       <div className="form-wrap">
                         <MdOutlineLocationCity />
+                        <div className="select-wrapper">  
                         <select
                           className={`form-control ${errors.property ? 'is-invalid' : ''}`}
                           name="property"
@@ -993,6 +1002,7 @@ const Home = () => {
                           <option value="interior">Interior</option>
                           <option value="international">International</option>
                         </select>
+                        </div>
                         {errors.property && <div className="invalid-feedback">{errors.property}</div>}
                       </div>
                     </div>

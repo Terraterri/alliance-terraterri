@@ -30,19 +30,7 @@ const Header = () => {
               <li className="nav-item">
                 <Link className="nav-link" to={"/airPropxSub"}>AirPropX</Link>
               </li>
-              <li className="nav-item">
-
-                <NavDropdown title="Solutions" id="basic-nav-dropdown">
-                  {/* <NavDropdown.Item href="/solutions">Realestate Webinars</NavDropdown.Item> */}
-                  <NavDropdown.Item href="/costomisedExpo">Exclusive Builder Expos</NavDropdown.Item>
-                  <NavDropdown.Item href="/phygiverse">Phygiverse Expos</NavDropdown.Item>
-                  {/* <NavDropdown.Item href="#action/3.3">Meta Brand Promotions</NavDropdown.Item> */}
-                  {/* <NavDropdown.Item href="#action/3.3">Metavarse Project Lanch</NavDropdown.Item> */}
-                  <NavDropdown.Item href="/hostbrandexpo">Host Your Branded Expo</NavDropdown.Item>
-                  {/* <NavDropdown.Item href="#action/3.4">International Realestate Expos</NavDropdown.Item> */}
-                  {/* <NavDropdown.Item href="#action/3.4">Expo Registration</NavDropdown.Item> */}
-                </NavDropdown>
-              </li>
+              
               <li className="nav-item">
                 <Link className="nav-link" to={"/whyexhibit"}>Why Exhibit</Link>
               </li>
@@ -63,7 +51,7 @@ const Header = () => {
                 <Link className="nav-link" to={"https://terraterri.com/contact"}>Contact Us</Link>
               </li> */}
               <li className="nav-item">
-                <Link to={"https://terraterri.com/MainLogin"}> <button className='kave-btn f-11px' href="#">Sign In</button></Link>
+                <Link to={"https://terraterri.com/MainLogin"}> <button className='kave-btn f-11px' href="#">SignIn</button></Link>
 
               </li>
             </ul>
