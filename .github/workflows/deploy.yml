@@ -1,0 +1,68 @@
+name: Build and Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  PROJECT_ID: terraterri-454406
+  REGION: asia-south1
+  SERVICE_NAME: alliance-terraterri
+  GAR_REPOSITORY: alliance-terraterri
+  IMAGE_NAME: alliance-terraterri
+
+jobs:
+  deploy:
+    name: Deploy to Google Cloud Run
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          # Alternatively, if using Workload Identity Federation:
+          # workload_identity_provider: ${{ secrets.WIP_NAME }}
+          # service_account: ${{ secrets.WIP_SA_EMAIL }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Configure Docker for Artifact Registry
+        run: |
+          gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+
+      - name: Build and Push Docker Image
+        run: |
+          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          DOCKER_TAG_LATEST="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY }}/${{ env.IMAGE_NAME }}:latest"
+          
+          docker build -t "$DOCKER_TAG" -t "$DOCKER_TAG_LATEST" .
+          docker push "$DOCKER_TAG"
+          docker push "$DOCKER_TAG_LATEST"
+
+      - name: Deploy to Cloud Run
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: ${{ env.SERVICE_NAME }}
+          region: ${{ env.REGION }}
+          image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.GAR_REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          flags: |
+            --allow-unauthenticated
+            --min-instances=1
+            --max-instances=100
+            --service-account=developer2propy@terraterri-454406.iam.gserviceaccount.com
+
+      - name: Show Output URL
+        run: echo "Deployment complete! Service URL is ${{ steps.deploy.outputs.url }}"
