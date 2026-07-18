@@ -790,12 +790,13 @@ const Registration = () => {
                                             <div className="col-md-12 wths_app mb-3">
                                                 <div className="row align-items-center">
                                                     <div className="col-md-7 pt-0">
-                                                        <div className="form-wrap topp postion-relative">
+                                                        <div className="form-wrap topp postion-relative phone-input-wrap">
                                                             <ImMobile className="colorchnage" />
+                                                            <span className="country-code-badge">{formData.countryCode || "+91"}</span>
                                                             <input
                                                                 type="tel"
-                                                                className={`form-control phone-num ${errors.number ? 'is-invalid' : ''}`}
-                                                                id="number_mob"
+                                                                className={`form-control phone-num-input ${errors.number ? 'is-invalid' : ''}`}
+                                                                id="number"
                                                                 name="number"
                                                                 placeholder="Enter your phone number"
                                                                 value={formData.number}
@@ -803,14 +804,6 @@ const Registration = () => {
                                                                 disabled={isNumberVerified}
                                                                 maxLength={getExpectedPhoneLength(selectedCountry?.isoCode)}
                                                                 required
-                                                            />
-                                                            <input
-                                                                type="text"
-                                                                className="form-control phone-cod"
-                                                                id="countryCode_mob"
-                                                                name="countryCode"
-                                                                value={formData.countryCode}
-                                                                readOnly
                                                             />
                                                             {errors.number && (
                                                                 <div className="error text-danger">{errors.number}</div>
