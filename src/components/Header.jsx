@@ -30,7 +30,7 @@ const Header = () => {
               <li className="nav-item">
                 <Link className="nav-link" to={"/airPropxSub"}>AirPropX</Link>
               </li>
-              
+
               <li className="nav-item">
                 <Link className="nav-link" to={"/whyexhibit"}>Why Exhibit</Link>
               </li>
@@ -38,10 +38,10 @@ const Header = () => {
                 <Link className="nav-link" to={"/whyVisit"}>Why Visit</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to={`https://builder.admin.terraterri.com`}>Book Your Stall</Link>
+                <Link className="nav-link" to={`https://builderalliance.terraterri.com`}>Book Your Stall</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to={""}>Expo Registration</Link>
+                <Link className="nav-link" to={"/registration?expoCode=INHYD14JUL26-R"}>Expo Registration</Link>
               </li>
               {/* <li className="nav-item">
                 <Link className="nav-link" to={""}>Blogs</Link>
@@ -50,14 +50,14 @@ const Header = () => {
               {/* <li className="nav-item">
                 <Link className="nav-link" to={"https://terraterri.com/contact"}>Contact Us</Link>
               </li> */}
-              <li className="nav-item">
+              {/* <li className="nav-item">
                 <Link to={"https://terraterri.com/MainLogin"}> <button className='kave-btn f-11px' href="#">SignIn</button></Link>
 
-              </li>
+              </li> */}
             </ul>
           </div>
 
-                  <Link className="navbar-brand p-0 text-right" to={"https://terraterri.com/"}><img src="../../assets/images/airpropx-logo.png" alt="logo" /></Link>
+          <Link className="navbar-brand p-0 text-right" to={"https://terraterri.com/"}><img src="../../assets/images/airpropx-logo.png" alt="logo" /></Link>
         </nav>
 
 
@@ -73,35 +73,35 @@ const Header = () => {
           <ul className="navbar-nav ">
 
             <li className="nav-item active">
-              <Link className="nav-link" to={"/"}>Home <span className="sr-only">(current)</span></Link>
+              <Link className="nav-link" to={"/"} onClick={() => setShow(false)}>Home <span className="sr-only">(current)</span></Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to={"/airPropxSub"}>AirPropX</Link>
+              <Link className="nav-link" to={"/airPropxSub"} onClick={() => setShow(false)}>AirPropX</Link>
             </li>
             <li className="nav-item">
 
               <NavDropdown title="Solutions" id="basic-nav-dropdown">
                 {/* <NavDropdown.Item href="/solutions">Realestate Webinars</NavDropdown.Item> */}
-                <NavDropdown.Item href="/costomisedExpo">Exclusive Builder Expos</NavDropdown.Item>
-                <NavDropdown.Item href="/phygiverse">Phygiverse Expos</NavDropdown.Item>
+                <NavDropdown.Item href="/costomisedExpo" onClick={() => setShow(false)}>Exclusive Builder Expos</NavDropdown.Item>
+                <NavDropdown.Item href="/phygiverse" onClick={() => setShow(false)}>Phygiverse Expos</NavDropdown.Item>
                 {/* <NavDropdown.Item href="#action/3.3">Meta Brand Promotions</NavDropdown.Item> */}
                 {/* <NavDropdown.Item href="#action/3.3">Metavarse Project Lanch</NavDropdown.Item> */}
-                <NavDropdown.Item href="/hostbrandexpo">Host Your Branded Expo</NavDropdown.Item>
+                <NavDropdown.Item href="/hostbrandexpo" onClick={() => setShow(false)}>Host Your Branded Expo</NavDropdown.Item>
                 {/* <NavDropdown.Item href="#action/3.4">International Realestate Expos</NavDropdown.Item> */}
                 {/* <NavDropdown.Item href="#action/3.4">Expo Registration</NavDropdown.Item> */}
               </NavDropdown>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to={"/whyexhibit"}>Why Exhibit</Link>
+              <Link className="nav-link" to={"/whyexhibit"} onClick={() => setShow(false)}>Why Exhibit</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to={"/whyVisit"}>Why Visit</Link>
+              <Link className="nav-link" to={"/whyVisit"} onClick={() => setShow(false)}>Why Visit</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to={`https://builder.admin.terraterri.com`}>Book Your Stall</Link>
+              <Link className="nav-link" to={`https://builder.admin.terraterri.com`} onClick={() => setShow(false)}>Book Your Stall</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to={""}>Expo Registration</Link>
+              <Link className="nav-link" to={"/registration?expoCode=INHYD14JUL26-R"} onClick={() => setShow(false)}>Expo Registration</Link>
             </li>
             {/* <li className="nav-item">
   <Link className="nav-link" to={""}>Blogs</Link>

@@ -2,16 +2,13 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import "react-multi-carousel/lib/styles.css";
 import { ImMobile } from "react-icons/im";
-import { IoLogoWhatsapp, IoMdMail } from "react-icons/io";
+import { IoMdMail } from "react-icons/io";
 import { MdOutlineLocationCity } from "react-icons/md";
 import { LuIndianRupee } from "react-icons/lu";
-import { Form, Link, useParams } from "react-router-dom";
-import moment from "moment";
+import { useParams } from "react-router-dom";
 import { expoAdminClient } from "../utils/httpClient";
 import Swal from "sweetalert2";
 import Loader from "../components/Loader";
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
-import "react-tabs/style/react-tabs.css";
 import { toastError, toastSuccess } from "../utils/toast";
 import "react-phone-input-2/lib/style.css";
 import { IoPersonSharp } from "react-icons/io5";
@@ -24,6 +21,31 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import AirPropxSection from "../components/Home/AirPropxSection";
 import AboutSection from "../components/Home/AboutSection";
+import { getExampleNumber, parsePhoneNumberFromString } from "libphonenumber-js";
+import examples from "libphonenumber-js/examples.mobile.json";
+
+const getExpectedPhoneLength = (isoCode) => {
+    if (!isoCode) isoCode = "IN";
+    try {
+        const example = getExampleNumber(isoCode, examples);
+        return example ? example.nationalNumber.length : 10;
+    } catch {
+        return 10;
+    }
+};
+
+const isValidMobile = (number, isoCode) => {
+    if (!number) return false;
+    if (!isoCode) isoCode = "IN";
+    const expectedLen = getExpectedPhoneLength(isoCode);
+    if (number.length !== expectedLen) return false;
+    try {
+        const parsed = parsePhoneNumberFromString(number, isoCode);
+        return parsed ? parsed.isValid() : (number.length === expectedLen);
+    } catch {
+        return number.length === expectedLen;
+    }
+};
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
@@ -40,15 +62,9 @@ const responsive = {
 };
 
 const Home = () => {
-  const { expoId, unqCode, source } = useParams();
+  const { expoId, unqCode } = useParams();
   const [expoData, setExpoData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [expos, setExpos] = useState([]);
-  const [filteredExpos, setFilteredExpos] = useState([]);
-  const [filteredCom, setFilteredCom] = useState([]);
-  const [filteredBan, setFilteredBan] = useState([]);
-  const [filteredIn, setFilteredIn] = useState([]);
-  const [filteredInter, setFilteredInter] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [verificationStatus, setVerificationStatus] = useState("idle");
   const [mobilePopup, setMobilePopup] = useState(false);
@@ -73,7 +89,6 @@ const Home = () => {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [selectedState, setSelectedState] = useState(null);
   const [selectedCity, setSelectedCity] = useState(null);
-  const [phoneCode, setPhoneCode] = useState("+91");
   const [countries, setCountries] = useState([]);
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
@@ -133,14 +148,14 @@ const Home = () => {
         }
 
         // Fetch all expos data
-        const ress = await expoAdminClient.get(
-          "NewExpo/get.php?type=future&limit=40&skip=0",
-          config
-        );
+        // const ress = await expoAdminClient.get(
+        //   "NewExpo/get.php?type=future&limit=40&skip=0",
+        //   config
+        // );
 
-        if (ress?.data?.status) {
-          setExpos(ress.data.data);
-        }
+        // if (ress?.data?.status) {
+        //   setExpos(ress.data.data);
+        // }
       } catch (err) {
         console.error("Error fetching expo data:", err);
         toastError("Something went wrong");
@@ -152,66 +167,30 @@ const Home = () => {
     fetchExpoData();
   }, [expoId]);
 
-  // Filter expos based on expoData
-  useEffect(() => {
-    if (expoData && expos.length) {
-      const city = expoData.expoCity;
-
-      setFilteredExpos(
-        expos.filter(
-          (expo) => expo.expoType === "Residential" && expo.expoCity === city
-        )
-      );
-      setFilteredCom(
-        expos.filter(
-          (expo) => expo.expoType === "Commercial" && expo.expoCity === city
-        )
-      );
-      setFilteredBan(
-        expos.filter(
-          (expo) => expo.expoType === "Banking" && expo.expoCity === city
-        )
-      );
-      setFilteredIn(
-        expos.filter(
-          (expo) => expo.expoType === "Interior" && expo.expoCity === city
-        )
-      );
-      setFilteredInter(
-        expos.filter(
-          (expo) => expo.expoType === "International" && expo.expoCity === city
-        )
-      );
-    }
-  }, [expoData, expos]);
-
-  const groupedExpos = filteredInter.reduce((acc, cExpo) => {
-    acc[cExpo.intCity] = acc[cExpo.intCity] || [];
-    acc[cExpo.intCity].push(cExpo);
-    return acc;
-  }, {});
-
   const handleCountryChange = (e) => {
     const selectedIsoCode = e.target.value;
     const selected = countries.find((c) => c.isoCode === selectedIsoCode);
     setSelectedCountry(selected);
 
-    const phoneCode = selected.phonecode ? `+${selected.phonecode}` : "";
-    const currency = selected.currency || "";
+    const phoneCode = selected?.phonecode ? `+${selected.phonecode}` : "";
+    const currency = selected?.currency || "";
+
+    setIsOtpVerified(false);
+    setIsNumberVerified(false);
 
     setFormData(prev => ({
       ...prev,
-      country: selected.name,
+      country: selected?.name || "",
       state: "",
       city: "",
+      number: "",
       countryCode: phoneCode,
       currency: currency
     }));
 
-    const statesData = State.getStatesOfCountry(selectedIsoCode);
+    const statesData = selectedIsoCode ? State.getStatesOfCountry(selectedIsoCode) : [];
     setStates(statesData);
     setCities([]);
-    setPhoneCode(phoneCode);
   };
 
   const handleStateChange = (e) => {
@@ -248,8 +227,17 @@ const Home = () => {
     if (!formData.country) newErrors.country = "Country is required";
     if (!formData.state) newErrors.state = "State is required";
     if (!formData.city) newErrors.city = "City is required";
-    if (!formData.number || formData.number.length < 10)
-      newErrors.number = "Valid phone number is required";
+
+    const expectedLen = getExpectedPhoneLength(selectedCountry?.isoCode);
+    const countryName = selectedCountry?.name || "India";
+    if (!formData.number) {
+      newErrors.number = "Phone number is required";
+    } else if (!isValidMobile(formData.number, selectedCountry?.isoCode)) {
+      newErrors.number = `Enter valid ${expectedLen}-digit phone number for ${countryName}`;
+    } else if (!isOtpVerified) {
+      newErrors.number = "Please verify your mobile number first";
+    }
+
     if (!formData.property) newErrors.property = "Property type is required";
     if (!formData.budget) newErrors.budget = "Budget is required";
 
@@ -331,8 +319,12 @@ const Home = () => {
   };
 
   const requestOtp = async () => {
-    if (!formData.number || formData.number.length < 10) {
-      setErrors(prev => ({ ...prev, number: "Valid phone number is required" }));
+    const expectedLen = getExpectedPhoneLength(selectedCountry?.isoCode);
+    const countryName = selectedCountry?.name || "India";
+    if (!formData.number || !isValidMobile(formData.number, selectedCountry?.isoCode)) {
+      const msg = `Enter valid ${expectedLen}-digit phone number for ${countryName}`;
+      setErrors(prev => ({ ...prev, number: msg }));
+      toastError(msg);
       return;
     }
 
@@ -423,7 +415,7 @@ const Home = () => {
       phoneCode: formData.countryCode
     }
     try {
-      const res = expoAdminClient.post("newExpoUsers/nonVerified.php", payload)
+      expoAdminClient.post("newExpoUsers/nonVerified.php", payload)
     } catch (err) {
       console.log(err)
     } finally {
@@ -432,15 +424,22 @@ const Home = () => {
   }
 
   const captureMobile = (e) => {
-    const value = e.target.value.replace(/\D/g, '').slice(0, 15);
+    const expectedLen = getExpectedPhoneLength(selectedCountry?.isoCode);
+    const value = e.target.value.replace(/\D/g, '').slice(0, expectedLen);
+
+    if (value !== formData.number) {
+      setIsOtpVerified(false);
+      setIsNumberVerified(false);
+    }
+
     setFormData(prev => ({
       ...prev,
       number: value
     }));
-    if (e.target.value.length >= 10) {
-      storeUnVerifiedMobile(e.target.value)
+    if (value.length === expectedLen) {
+      storeUnVerifiedMobile(value);
     }
-  }
+  };
 
   if (loading) return <Loader />;
   if (!expoData) return <div className="container py-5 text-center">No expo data found</div>;
@@ -635,7 +634,7 @@ const Home = () => {
                       <div className="col-md-4 mb-3">
                         <div className="form-wrap topppp tpppp">
                           <MdOutlineLocationCity />
-                          <div class="select-wrapper">
+                          <div className="select-wrapper">
                           <select
                             className={`form-control ${errors.country ? 'is-invalid' : ''}`}
                             name="country"
@@ -710,24 +709,19 @@ const Home = () => {
                               <input
                                 type="tel"
                                 className={`form-control phone-num ${errors.number ? 'is-invalid' : ''}`}
-                                id="number"
+                                id="number_mob"
                                 name="number"
                                 placeholder="Enter your phone number"
                                 value={formData.number}
-                                onChange={(e) => {
-                                  const value = e.target.value.replace(/\D/g, '').slice(0, 15);
-                                  setFormData(prev => ({
-                                    ...prev,
-                                    number: value
-                                  }));
-                                }}
+                                onChange={captureMobile}
                                 disabled={isNumberVerified}
+                                maxLength={getExpectedPhoneLength(selectedCountry?.isoCode)}
                                 required
                               />
                               <input
                                 type="text"
                                 className="form-control phone-cod"
-                                id="countryCode"
+                                id="countryCode_mob"
                                 name="countryCode"
                                 value={formData.countryCode}
                                 readOnly
@@ -748,7 +742,7 @@ const Home = () => {
                                 <button
                                   className="kave-btn btncolorc"
                                   type="button"
-                                  disabled={loading || !formData.number || formData.number.length < 10}
+                                  disabled={loading || !isValidMobile(formData.number, selectedCountry?.isoCode)}
                                   onClick={requestOtp}
                                 >
                                   {loading ? "Sending..." : "Get OTP"}
@@ -1064,6 +1058,7 @@ const Home = () => {
                               value={formData.number}
                               onChange={captureMobile}
                               disabled={isNumberVerified}
+                              maxLength={getExpectedPhoneLength(selectedCountry?.isoCode)}
                               required
                             />
                             <input
@@ -1090,7 +1085,7 @@ const Home = () => {
                               <button
                                 className="kave-btn btncolorc"
                                 type="button"
-                                disabled={loading || !formData.number || formData.number.length < 10}
+                                disabled={loading || !isValidMobile(formData.number, selectedCountry?.isoCode)}
                                 onClick={requestOtp}
                               >
                                 {loading ? "Sending..." : "Get OTP"}

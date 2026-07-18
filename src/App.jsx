@@ -16,18 +16,19 @@ const WhyVisit = React.lazy(() => import("./pages/WhyVisit"));
 const HostBrandExpo = React.lazy(() => import("./pages/HostBrandExpo"));
 const CostomisedExpo = React.lazy(() => import("./pages/CostomisedExpo"));
 const Phygiverse = React.lazy(() => import("./pages/Phygiverse"));
+const Registration = React.lazy(() => import("./pages/Registration"));
 
 function App() {
   return (
     <HelmetProvider>
       <Router>
         <>
-          
+
           <Suspense fallback={<Loader />}>
-          <Header />
+            <Header />
             <Routes>
               <Route path="/" element={<AirPropex />} />
-              <Route path="/home/:expoId/:unqCode" element={<Home />} />
+              {/* <Route path="/home/:expoId/:unqCode" element={<Home />} /> */}
               <Route path="/airPropxSub" element={<AirPropxSub />} />
               <Route path="/solutions" element={<Solutions />} />
               <Route path="/whyexhibit" element={<WhyExhibt />} />
@@ -35,10 +36,12 @@ function App() {
               <Route path="/hostbrandexpo" element={<HostBrandExpo />} />
               <Route path="/costomisedExpo" element={<CostomisedExpo />} />
               <Route path="/phygiverse" element={<Phygiverse />} />
+              <Route path="/registration" element={<Registration />} />
+              <Route path="/registration/:expoCode" element={<Registration />} />
             </Routes>
             <Footer />
           </Suspense>
-        
+
         </>
       </Router>
     </HelmetProvider>

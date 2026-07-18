@@ -5,14 +5,37 @@ export const OtpInput = ({ length = 6, onComplete }) => {
     const inputRefs = useRef([]);
 
     const handleChange = (index, value) => {
-        if (isNaN(Number(value))) return;
+        const cleanedValue = value.trim();
+
+        // If input contains multiple digits (e.g. SMS autofill or mobile paste)
+        if (cleanedValue.length > 1) {
+            const digitsOnly = cleanedValue.replace(/\D/g, '').slice(0, length);
+            if (!digitsOnly) return;
+
+            const newOtp = new Array(length).fill('');
+            digitsOnly.split('').forEach((val, idx) => {
+                newOtp[idx] = val;
+            });
+            setOtp(newOtp);
+
+            const focusIndex = Math.min(digitsOnly.length - 1, length - 1);
+            inputRefs.current[focusIndex]?.focus();
+
+            const otpValue = newOtp.join('');
+            if (otpValue.length === length) {
+                onComplete(otpValue);
+            }
+            return;
+        }
+
+        if (cleanedValue !== '' && isNaN(Number(cleanedValue))) return;
 
         const newOtp = [...otp];
-        newOtp[index] = value;
+        newOtp[index] = cleanedValue;
         setOtp(newOtp);
 
         // Move to next input if value is entered
-        if (value !== '' && index < length - 1) {
+        if (cleanedValue !== '' && index < length - 1) {
             inputRefs.current[index + 1]?.focus();
         }
 
@@ -34,18 +57,23 @@ export const OtpInput = ({ length = 6, onComplete }) => {
 
     const handlePaste = (e) => {
         e.preventDefault();
-        const pastedData = e.clipboardData.getData('text').slice(0, length);
-        if (!/^\d+$/.test(pastedData)) return;
+        const pastedData = e.clipboardData.getData('text').replace(/\D/g, '').slice(0, length);
+        if (!pastedData) return;
 
-        const newOtp = [...otp];
+        const newOtp = new Array(length).fill('');
         pastedData.split('').forEach((value, index) => {
             newOtp[index] = value;
         });
         setOtp(newOtp);
 
-        // Focus last filled input or first empty input
-        const focusIndex = Math.min(pastedData.length, length - 1);
+        // Focus last filled input
+        const focusIndex = Math.min(pastedData.length - 1, length - 1);
         inputRefs.current[focusIndex]?.focus();
+
+        const otpValue = newOtp.join('');
+        if (otpValue.length === length) {
+            onComplete(otpValue);
+        }
     };
 
     return (

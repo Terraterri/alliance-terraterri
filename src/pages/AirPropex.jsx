@@ -249,22 +249,29 @@ const AirPropex = () => {
   }, []);
 
 
-  const handleExploreClick = () => {
-    if (selectedCountry && selectedCity && selectedType) {
+  const handleExploreClick = (expoUnqCode) => {
 
 
+    window.location.href = '/registration?expoCode=' + expoUnqCode
 
-      const filtered = expos.filter(
-        (expo) =>
-          expo.expoCountry === selectedCountry &&
-          expo.expoCity === selectedCity &&
-          expo.expoType === selectedType
-      );
-      setFilteredDates(filtered);
-      setShowSlots(true);
-    } else {
-      toastWarning('Please select a Country, City, and Expo Type!');
-    }
+    // if (selectedCountry && selectedCity && selectedType) {
+
+
+    //   window.location.reload = '/registration?expoCode=' + expoUnqCode
+
+
+    // const filtered = expos.filter(
+    //   (expo) =>
+    //     expo.expoCountry === selectedCountry &&
+    //     expo.expoCity === selectedCity &&
+    //     expo.expoType === selectedType &&
+    //     expo.expoUnqCode === expoUnqCode
+    // );
+    // setFilteredDates(filtered);
+    // setShowSlots(true);
+    // } else {
+    //   toastWarning('Please select a Country, City, and Expo Type!');
+    // }
   };
 
   useEffect(() => {
@@ -340,14 +347,14 @@ const AirPropex = () => {
                     <p className=""><b>New York</b></p>
 
                     <div className="row slet_out MT-0">
-        
-                
+
+
                       <div className="col-lg-8 pt-0 d-flex align-items-center justify-content-center col-md-3 col-sm-4">
                         <div className="hBtn go_btn">
-                          <h5>Register to Discover Now       </h5>      
-                          <Link to='/home/253/TTUSNew2029AUG16-R'> <button onClick={handleExploreClick} className="btn">
+                          <h5>Register to Discover Now       </h5>
+                          <button onClick={() => handleExploreClick('INHYD14JUL26-R')} className="btn">
                             {/* <span className="kave-line"></span> */}
-Register                          </button></Link>
+                            Register                          </button>
                           {/* <button onClick={handleExploreClick}>Explore</button> */}
                         </div>
                       </div>
@@ -429,11 +436,11 @@ Register                          </button></Link>
                   <h3>EXPLORE AIRPROPX UPCOMING METAVERSE International Realestate EXPOS</h3>
                 </div>
               </div> */}
-       
 
 
 
-        
+
+
 
 
 

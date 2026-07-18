@@ -43,10 +43,10 @@ const WhyExhibt = () => {
               </div>
             </div>
             <div className="col-md-12 text-center">
-                <h2 className="whyexTitle">
-                  Benefits for Builders in AirPropX Virtual Expo
-                </h2>
-              </div>
+              <h2 className="whyexTitle">
+                Benefits for Builders in AirPropX Virtual Expo
+              </h2>
+            </div>
             <div className="row flex-rev">
               <div className="col-lg-6 col-md-12">
                 <div className="overFsrol">
@@ -91,8 +91,8 @@ const WhyExhibt = () => {
                   <img src="assets/images/whyEx.jpg" alt="image" width={600}
                     height={300} />
                   <div className="imageLineC"></div>
-                  <Link to={`https://builder.admin.terraterri.com`}>   <button>Book Your Stall</button></Link>
-                  
+                  <Link to={`https://builderalliance.terraterri.com`}>   <button>Book Your Stall</button></Link>
+
 
                 </div>
               </div>
