@@ -92,7 +92,7 @@ const WhyExhibt = () => {
                   <img src="assets/images/whyEx.jpg" alt="image" width={600}
                     height={300} />
                   <div className="imageLineC"></div>
-                  <Link to={environment.builderAllianceUrl}>   <button>Book Your Stall</button></Link>
+                  <Link to={environment.builderAdminUrl} target="_blank">   <button>Book Your Stall</button></Link>
 
 
                 </div>
