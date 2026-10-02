@@ -16,7 +16,7 @@ const Header = () => {
 
       <header className="section page-header">
         <nav className="navbar navbar-expand-lg navbar-light ps-3 pe-3 d-flex">
-          <Link className="navbar-brand p-0" to={"https://terraterri.com/"}>NexAirpropx</Link>
+          <Link className="navbar-brand p-0" to={"/"}>NexAirpropx</Link>
           <button className="navbar-toggler" onClick={() => setShow(true)} type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon" ></span>
           </button>
@@ -41,7 +41,7 @@ const Header = () => {
                 <Link className="nav-link" to={`https://builder.admin.terraterri.com/`} target="_blank">Book Your Stall</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to={"/registration?expoCode=INHYD14JUL26-R"}>Expo Registration</Link>
+                <Link className="nav-link" to={"/registration?expoCode=EXINHYDWEST22SEP26-C"}>Expo Registration</Link>
               </li>
               {/* <li className="nav-item">
                 <Link className="nav-link" to={""}>Blogs</Link>
@@ -101,7 +101,7 @@ const Header = () => {
               <Link className="nav-link" to={`https://builder.admin.terraterri.com`} onClick={() => setShow(false)}>Book Your Stall</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to={"/registration?expoCode=INHYD14JUL26-R"} onClick={() => setShow(false)}>Expo Registration</Link>
+              <Link className="nav-link" to={"/registration?expoCode=EXINHYDWEST22SEP26-C"} onClick={() => setShow(false)}>Expo Registration</Link>
             </li>
             {/* <li className="nav-item">
   <Link className="nav-link" to={""}>Blogs</Link>

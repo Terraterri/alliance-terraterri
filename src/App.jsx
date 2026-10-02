@@ -1,6 +1,8 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { HelmetProvider } from "react-helmet-async";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -23,7 +25,7 @@ function App() {
     <HelmetProvider>
       <Router>
         <>
-
+          <ToastContainer />
           <Suspense fallback={<Loader />}>
             <Header />
             <Routes>

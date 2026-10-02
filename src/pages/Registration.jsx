@@ -294,7 +294,7 @@ const Registration = () => {
         if (!formData.country) newErrors.country = "Country is required";
         if (!formData.state) newErrors.state = "State is required";
         if (!formData.city) newErrors.city = "City is required";
-        
+
         const expectedLen = getExpectedPhoneLength(selectedCountry?.isoCode);
         const countryName = selectedCountry?.name || "India";
         if (!formData.number) {
@@ -368,12 +368,12 @@ const Registration = () => {
                     title: "Thank You!",
                     html: `
             <h5>Registration Successful!</h5>
-            <p>The expo link will be sent to your registered Email and WhatsApp shortly.</p>
+            <p>Visit this <a href="https://storage.googleapis.com/airpropx-expo-dev/index.html?expo=EXINHYDWEST22SEP26-C" target="_blank">Expo</a> </p>
           `,
                     icon: "success",
                     position: "right",
                     showConfirmButton: false,
-                    timer: 3800,
+                    timer: 5000,
                 });
                 resetForm();
             } else {
@@ -401,10 +401,10 @@ const Registration = () => {
         }
 
         setOtpSending(true);
-        const currentExpoId = expoId || expoData?.newExpoId || "";
         const payload = {
-            phone: formData.countryCode + formData.number,
-            expoId: currentExpoId
+            phone: formData.number,
+            expoId: expoCode,
+            countryCode: formData.countryCode,
         };
 
         try {
@@ -416,7 +416,8 @@ const Registration = () => {
                 toastError(res?.data?.message || "Failed to send OTP. Please try again.");
             }
         } catch (err) {
-            toastError('Something went wrong! Please try after sometime');
+            const errorMsg = err?.response?.data?.message || 'Something went wrong! Please try after sometime';
+            toastError(errorMsg);
             console.error("Error requesting OTP", err);
         } finally {
             setOtpSending(false);
@@ -458,7 +459,8 @@ const Registration = () => {
             }
         } catch (err) {
             setVerificationStatus("error");
-            toastError("Error verifying OTP. Please try after sometime");
+            const errorMsg = err?.response?.data?.message || "Error verifying OTP. Please try after sometime";
+            toastError(errorMsg);
             console.error("Error verifying OTP", err);
         } finally {
             setOtpLoading(false);
@@ -512,7 +514,7 @@ const Registration = () => {
     const captureMobile = (e) => {
         const expectedLen = getExpectedPhoneLength(selectedCountry?.isoCode);
         const value = e.target.value.replace(/\D/g, '').slice(0, expectedLen);
-        
+
         if (value !== formData.number) {
             setIsOtpVerified(false);
             setIsNumberVerified(false);
@@ -1279,10 +1281,10 @@ const Registration = () => {
                             <h3 className="text-xl font-semibold text-gray-800 mb-2">
                                 Verification Successful!
                             </h3>
-                            <p className="text-gray-600 mb-4">
+                            <p className="mb-4" style={{ color: '#28cf5aff' }}>
                                 Your mobile number has been verified successfully.
                             </p>
-                            <button onClick={handleStartOver} className="kave-btn">
+                            <button onClick={handleStartOver} style={{ backgroundColor: '#6673e2ff' }}>
                                 Continue
                             </button>
                         </div>

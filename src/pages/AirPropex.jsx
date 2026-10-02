@@ -352,7 +352,7 @@ const AirPropex = () => {
                       <div className="col-lg-8 pt-0 d-flex align-items-center justify-content-center col-md-3 col-sm-4">
                         <div className="hBtn go_btn">
                           <h5>Register to Discover Now       </h5>
-                          <button onClick={() => handleExploreClick('INHYD14JUL26-R')} className="btn">
+                          <button onClick={() => handleExploreClick('EXINHYDWEST22SEP26-C')} className="btn">
                             {/* <span className="kave-line"></span> */}
                             Register                          </button>
                           {/* <button onClick={handleExploreClick}>Explore</button> */}
