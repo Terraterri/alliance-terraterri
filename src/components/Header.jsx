@@ -43,9 +43,9 @@ const Header = () => {
               <li className="nav-item">
                 <Link className="nav-link" to={"/registration?expoCode=EXINHYDWEST22SEP26-C"}>Expo Registration</Link>
               </li>
-              {/* <li className="nav-item">
-                <Link className="nav-link" to={""}>Blogs</Link>
-              </li> */}
+              <li className="nav-item">
+                <Link className="nav-link" to={"http://35.247.186.58/videoplayer/index.html"}>New Expo link</Link>
+              </li>
 
               {/* <li className="nav-item">
                 <Link className="nav-link" to={"https://terraterri.com/contact"}>Contact Us</Link>
