@@ -8,6 +8,66 @@ const Header = () => {
   const [show, setShow] = useState(false);
 
 
+  const generateUUID = () => {
+    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+      try {
+        return crypto.randomUUID();
+      } catch (e) {
+        // Fallback for non-secure contexts
+      }
+    }
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+      const r = (Math.random() * 16) | 0;
+      const v = c === 'x' ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
+  };
+
+  const generateSessionId = async () => {
+    // Open a tab immediately to avoid popup blocking.
+    const expoWindow = window.open("about:blank", "_blank");
+
+    if (!expoWindow) {
+      alert("Please allow popups to open the Expo.");
+      return;
+    }
+
+    expoWindow.document.title = "Starting Expo";
+    expoWindow.document.body.textContent =
+      "Starting your Expo session. Please wait...";
+
+    try {
+      const response = await fetch(
+        "https://expoadminapi.terraterri.com/unity/create-session.php",
+        {
+          method: "POST",
+          credentials: "include"
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (!data.success || !data.streamUrl) {
+        throw new Error(data.error || "Session creation failed");
+      }
+
+      // Open the dynamically assigned Unity streaming URL.
+      expoWindow.location.replace(data.streamUrl);
+
+    } catch (error) {
+      console.error("Unity session creation failed:", error);
+
+      expoWindow.close();
+
+      alert("Unable to start Expo. Please try again.");
+    }
+  };
+
+
   return (
     <>
 
@@ -44,7 +104,7 @@ const Header = () => {
                 <Link className="nav-link" to={"/registration?expoCode=EXINHYDWEST22SEP26-C"}>Expo Registration</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link" to={"http://35.247.186.58/videoplayer/index.html"}>New Expo link</Link>
+                <Link className="nav-link" style={{ cursor: 'pointer' }} onClick={(e) => { e.preventDefault(); generateSessionId("http://35.247.186.58:8081/videoplayer/index.html"); }}>New Expo link</Link>
               </li>
 
               {/* <li className="nav-item">
@@ -102,6 +162,9 @@ const Header = () => {
             </li>
             <li className="nav-item">
               <Link className="nav-link" to={"/registration?expoCode=EXINHYDWEST22SEP26-C"} onClick={() => setShow(false)}>Expo Registration</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" style={{ cursor: 'pointer' }} onClick={(e) => { e.preventDefault(); setShow(false); generateSessionId("http://35.247.186.58:8081/videoplayer/index.html"); }}>New Expo link</Link>
             </li>
             {/* <li className="nav-item">
   <Link className="nav-link" to={""}>Blogs</Link>
